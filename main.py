@@ -8,6 +8,19 @@ import os
 
 app = FastAPI()
 
+# HTTPS 강제 설정 (fly.io 배포 환경)
+@app.middleware("http")
+async def force_https_middleware(request: Request, call_next):
+    # fly.io에서는 X-Forwarded-Proto 헤더로 프로토콜 확인
+    if request.headers.get("x-forwarded-proto") == "http":
+        # HTTPS로 리다이렉트
+        url = request.url.replace(scheme="https")
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url, status_code=301)
+    
+    response = await call_next(request)
+    return response
+
 # 정적 파일 디렉토리 설정
 static_dir = "static"
 templates_dir = "templates"
