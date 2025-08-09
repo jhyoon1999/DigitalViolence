@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}디지털성범죄 통계 | 디지털 성범죄 알리미{% endblock %}
+
+{% block content %}
+<h1 class="mb-4" style="color: var(--accent); font-weight: 700;">디지털성범죄 통계</h1>
+
+<!-- 연령대별 세부 피해 유형 (스택 바 차트) -->
+<div class="card">
+  <section class="my-4">
+    <h2 class="mb-3" style="color: var(--accent);">연령대별 세부 피해 유형</h2>
+    <canvas id="ageTypeChart" height="120"></canvas>
+    <script>
+      const ageTypeCtx = document.getElementById('ageTypeChart').getContext('2d');
+      new Chart(ageTypeCtx, {
+        type: 'bar',
+        data: {
+          labels: {{ age_labels | tojson }},
+          datasets: [
+            {% for type in age_types %}
+            {
+              label: '{{ type }}',
+              data: {{ age_type_values[loop.index0] | tojson }},
+              backgroundColor: 'rgba({{ 60+loop.index0*30 }}, {{ 99+loop.index0*20 }}, 255, 0.7)',
+              borderColor: 'rgba({{ 59+loop.index0*30 }}, 76, 202, 1)',
+              borderWidth: 1
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        },
+        options: {
+          plugins: {
+            legend: { labels: { color: '#f5f6fa' } }
+          },
+          responsive: true,
+          scales: {
+            x: { stacked: true, title: { display: true, text: '연령대', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } },
+            y: { stacked: true, beginAtZero: true, title: { display: true, text: '건수', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } }
+          }
+        }
+      });
+    </script>
+    <div style="color: var(--text-sub); font-size: 0.98rem; margin-top: 0.5rem;">
+      *해당 그래프는 한국여성인권진흥원의 데이터를 활용
+    </div>
+  </section>
+</div>
+
+<!-- 연도별 지원현황 (라인 차트) -->
+<div class="card">
+  <section class="my-4">
+    <h2 class="mb-3" style="color: var(--accent);">연도별 지원현황</h2>
+    <canvas id="supportChart" height="120"></canvas>
+    <script>
+      const supportCtx = document.getElementById('supportChart').getContext('2d');
+      new Chart(supportCtx, {
+        type: 'line',
+        data: {
+          labels: {{ year_labels | tojson }},
+          datasets: [
+            {% for type in support_types %}
+            {
+              label: '{{ type }}',
+              data: {{ support_type_values[loop.index0] | tojson }},
+              borderColor: 'rgba({{ 59+loop.index0*30 }}, 76, 202, 1)',
+              backgroundColor: 'rgba({{ 60+loop.index0*30 }}, {{ 99+loop.index0*20 }}, 255, 0.2)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: false
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        },
+        options: {
+          plugins: {
+            legend: { labels: { color: '#f5f6fa' } }
+          },
+          responsive: true,
+          scales: {
+            x: { title: { display: true, text: '연도', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } },
+            y: { beginAtZero: true, title: { display: true, text: '건수', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } }
+          }
+        }
+      });
+    </script>
+    <div style="color: var(--text-sub); font-size: 0.98rem; margin-top: 0.5rem;">
+      *해당 그래프는 한국여성인권진흥원의 데이터를 활용
+    </div>
+  </section>
+</div>
+{% endblock %} 

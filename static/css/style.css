@@ -1,0 +1,201 @@
+/* 딥하고 진중한 스타일의 메인 컬러 팔레트 */
+:root {
+  --main-bg: #181c2b;
+  --card-bg: #23263a;
+  --primary: #3b4cca;
+  --accent: #6c63ff;
+  --danger: #f67280;
+  --text-main: #f5f6fa;
+  --text-sub: #b0b3c6;
+  --border: #23263a;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Nanum Gothic', sans-serif;
+  background: var(--main-bg);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+}
+
+/* 네비게이션 바 스타일 */
+.navbar {
+  background: #14172b !important;
+  box-shadow: var(--shadow);
+  padding: 1rem 0;
+}
+
+.navbar .navbar-brand {
+  font-weight: bold;
+  color: var(--accent) !important;
+  letter-spacing: 1px;
+  font-size: 1.4rem;
+}
+
+.navbar .nav-link {
+  color: var(--text-main) !important;
+  transition: color 0.3s ease;
+  padding: 0.5rem 1rem !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--accent) !important;
+}
+
+.navbar .nav-link.active {
+  color: var(--accent) !important;
+  font-weight: 600;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 991px) {
+  .navbar-nav {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .navbar .nav-link {
+    font-size: 1.1rem !important;
+    padding: 0.7rem 1rem !important;
+  }
+}
+
+main .container {
+  max-width: 900px;
+}
+
+/* 배너 섹션 */
+.banner {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, rgba(24,28,43,0.9) 60%, rgba(59,76,202,0.5) 100%);
+  z-index: 1;
+}
+.banner .container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.banner h1 {
+  font-size: 2.7rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.banner p {
+  font-size: 1.2rem;
+  color: var(--text-sub);
+}
+.banner .btn {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  padding: 0.7rem 2.2rem;
+  border-radius: 2rem;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  border: none;
+  transition: background 0.2s;
+}
+.banner .btn:hover {
+  background: var(--primary);
+}
+
+/* 카드 스타일 */
+.card {
+  background: var(--card-bg);
+  border-radius: 1.2rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 2rem 2rem 1.5rem 2rem;
+  margin-bottom: 2rem;
+}
+
+/* 차트 영역 */
+#ageChart {
+  max-width: 100%;
+  background: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+/* 서비스 소개 */
+.service-intro {
+  background: var(--card-bg);
+  border-radius: 1.2rem;
+  box-shadow: var(--shadow);
+  padding: 2rem 2rem 1.5rem 2rem;
+  color: var(--text-main);
+}
+.service-intro h2 {
+  color: var(--accent);
+  font-weight: 700;
+}
+.service-intro p {
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--text-sub);
+  margin-bottom: 1.1rem;
+}
+.service-intro .icon {
+  font-size: 2.2rem;
+  color: var(--primary);
+  margin-bottom: 0.7rem;
+  display: inline-block;
+}
+
+/* 버튼 */
+.btn-primary {
+  background: var(--accent) !important;
+  border: none;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 2rem;
+  box-shadow: var(--shadow);
+  transition: background 0.2s;
+}
+.btn-primary:hover {
+  background: var(--primary) !important;
+}
+
+/* 푸터 */
+footer {
+  background: #23263a !important;
+  color: var(--text-sub);
+  border-top: 1px solid #23263a;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .banner {
+    height: 220px;
+    border-radius: 1rem;
+  }
+  .banner h1 {
+    font-size: 1.5rem;
+  }
+  .banner p {
+    font-size: 1rem;
+  }
+  .card, .service-intro {
+    padding: 1.2rem 1rem 1rem 1rem;
+    border-radius: 0.7rem;
+  }
+}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}뉴스 | 디지털 성범죄 알리미{% endblock %}
+
+{% block content %}
+<h1 class="mb-4" style="color: var(--accent); font-weight: 700;">뉴스</h1>
+
+<div class="service-intro mb-4">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-newspaper"></i></span>
+  </div>
+  <h2 class="mb-3">최신 뉴스</h2>
+  
+  {% if news_data %}
+    <div class="row">
+      {% for news in news_data %}
+      <div class="col-md-6 mb-4">
+        <div class="card" style="background: var(--main-bg); border: 1px solid var(--border); height: 100%;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title" style="color: var(--accent);">{{ news.제목 }}</h5>
+            <p class="card-text flex-grow-1" style="color: var(--text-sub);">
+              {{ news.내용 }}
+            </p>
+            <div class="mt-auto">
+              <small class="text-muted" style="color: var(--text-sub);">{{ news.날짜 }}</small><br>
+              <a href="{{ news.링크 }}" target="_blank" class="btn btn-primary btn-sm mt-2">자세히 보기</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info" style="background: var(--card-bg); border: 1px solid var(--border); color: var(--text-sub);">
+      현재 표시할 뉴스가 없습니다.
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %} 

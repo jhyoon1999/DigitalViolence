@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}서비스 소개 | 디지털 성범죄 알리미{% endblock %}
+
+{% block content %}
+<h1 class="mb-4" style="color: var(--accent); font-weight: 700;">서비스 소개</h1>
+
+<!-- 1. 서비스 개요 -->
+<div class="service-intro mb-4">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-shield-alt"></i></span>
+  </div>
+  <h2 class="mb-3">서비스 개요</h2>
+  <p>
+    본 웹사이트는 디지털 성범죄의 심각성을 널리 알리고자 제작되었습니다.
+    특히 <strong>여성가족부</strong>와 <strong>한국여성인권진흥원</strong>이 제공하는
+    다양한 데이터를 활용하여, 연령대별·지역별 통계와 주요 정책 정보를
+    쉽게 조회할 수 있도록 구성하였습니다.
+  </p>
+  <p>
+    앞으로도 투명한 데이터 제공을 통해 디지털 성범죄 근절에 기여하며,
+    피해자 지원 및 예방 교육 자료를 지속해서 업데이트할 예정입니다.
+  </p>
+</div>
+
+<!-- 2. 주요 기능 -->
+<div class="service-intro mb-4">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-chart-bar"></i></span>
+  </div>
+  <h2 class="mb-3">주요 기능</h2>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-users me-2"></i>연령대별 통계</h4>
+      <p>디지털 성범죄 피해자의 연령대별 분포와 세부 피해 유형을 시각화하여 제공합니다.</p>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-calendar-alt me-2"></i>연도별 현황</h4>
+      <p>2018년부터 최근까지의 지원현황 추이를 통해 디지털 성범죄 대응 현황을 파악할 수 있습니다.</p>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-phone me-2"></i>신고 지원</h4>
+      <p>디지털 성범죄 신고 및 상담을 위한 공식 채널로 안내하여 즉시 도움을 받을 수 있도록 합니다.</p>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-database me-2"></i>데이터 투명성</h4>
+      <p>모든 통계는 공공기관의 공식 데이터를 기반으로 하여 신뢰성을 보장합니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 데이터 출처 -->
+<div class="service-intro mb-4">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-building"></i></span>
+  </div>
+  <h2 class="mb-3">데이터 출처</h2>
+  <ul style="color: var(--text-sub); line-height: 1.8;">
+    <li><strong>한국여성인권진흥원</strong> - 디지털성범죄피해자지원센터 연령대별 세부 피해 유형 현황</li>
+    <li><strong>한국여성인권진흥원</strong> - 디지털성범죄피해자지원센터 지원현황</li>
+    <li><strong>한국여성인권진흥원</strong> - 직장 내 성희롱 성폭력 상담 및 피해자 지원기관 연계 현황</li>
+    <li><strong>여성가족부</strong> - 디지털 성범죄 관련 정책 및 통계 자료</li>
+  </ul>
+</div>
+
+<!-- 4. 문의 및 지원 -->
+<div class="service-intro">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-hands-helping"></i></span>
+  </div>
+  <h2 class="mb-3">문의 및 지원</h2>
+  <p>
+    디지털 성범죄 피해를 당하셨거나 도움이 필요하시다면 아래 기관으로 연락해 주세요.
+  </p>
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <h4 style="color: var(--accent);"><i class="fas fa-phone me-2"></i>디지털성범죄피해자지원센터</h4>
+      <p style="color: var(--text-sub);">
+        전화: 02-735-8994<br>
+        온라인 신고: <a href="https://d4u.stop.or.kr" target="_blank" style="color: var(--accent);">https://d4u.stop.or.kr</a>
+      </p>
+    </div>
+    <div class="col-md-6">
+      <h4 style="color: var(--accent);"><i class="fas fa-shield-alt me-2"></i>여성긴급전화</h4>
+      <p style="color: var(--text-sub);">
+        전화: 1366<br>
+        24시간 상담 및 지원 서비스
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %} 

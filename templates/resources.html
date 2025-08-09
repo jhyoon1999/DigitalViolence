@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}관련기관·법률 | 디지털 성범죄 알리미{% endblock %}
+
+{% block content %}
+<h1 class="mb-4" style="color: var(--accent); font-weight: 700;">관련기관·법률</h1>
+
+<!-- 1. 관련 기관 링크 -->
+<div class="service-intro mb-4">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-link"></i></span>
+  </div>
+  <h2 class="mb-3">관련 기관</h2>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <div class="text-center">
+        <h4 style="color: var(--accent);"><i class="fas fa-building me-2"></i>여성가족부</h4>
+        <p style="color: var(--text-sub);">디지털 성범죄 정책 및 지원</p>
+        <a href="https://www.mogef.go.kr" target="_blank" class="btn btn-primary btn-sm">바로가기</a>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="text-center">
+        <h4 style="color: var(--accent);"><i class="fas fa-shield-alt me-2"></i>한국여성인권진흥워</h4>
+        <p style="color: var(--text-sub);">피해자 상담 및 지원</p>
+        <a href="https://www.stop.or.kr" target="_blank" class="btn btn-primary btn-sm">바로가기</a>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="text-center">
+        <h4 style="color: var(--accent);"><i class="fas fa-search me-2"></i>경찰청 사이버수사대</h4>
+        <p style="color: var(--text-sub);">사이버 성범죄 수사</p>
+        <a href="https://ecrm.police.go.kr/minwon/main" target="_blank" class="btn btn-primary btn-sm">바로가기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 법률 정보 -->
+<div class="service-intro mb-4">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-book"></i></span>
+  </div>
+  <h2 class="mb-3">관련 법률</h2>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-balance-scale me-2"></i>성폭력처벌법</h4>
+      <p style="color: var(--text-sub);">
+        성폭력범죄의 처벌 등에 관한 특례법<br>
+        - 카메라 등 이용촬영 (제14조)<br>
+        - 통신매체 이용 음란행위 (제13조)
+      </p>
+      <a href="https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208640" target="_blank" class="btn btn-primary btn-sm">법령 보기</a>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-user-shield me-2"></i>정보통신망법</h4>
+      <p style="color: var(--text-sub);">
+        정보통신망 이용촉진 및 정보보호 등에 관한 법률<br>
+        - 불법정보의 유통금지 (제44조의7)<br>
+        - 음란물 유포 처벌 규정
+      </p>
+      <a href="https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=208271" target="_blank" class="btn btn-primary btn-sm">법령 보기</a>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 긴급 연락처 -->
+<div class="service-intro">
+  <div class="text-center mb-3">
+    <span class="icon"><i class="fas fa-phone"></i></span>
+  </div>
+  <h2 class="mb-3">긴급 연락처</h2>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-phone me-2"></i>디지털성범죄피해자지원센터</h4>
+      <p style="color: var(--text-sub);">
+        전화: 02-735-8994<br>
+        온라인 신고: <a href="https://d4u.stop.or.kr" target="_blank" style="color: var(--accent);">https://d4u.stop.or.kr</a>
+      </p>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h4 style="color: var(--accent);"><i class="fas fa-shield-alt me-2"></i>여성긴급전화</h4>
+      <p style="color: var(--text-sub);">
+        전화: 1366<br>
+        24시간 상담 및 지원 서비스
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %} 
