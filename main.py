@@ -110,7 +110,8 @@ async def statistics(request: Request):
 
     # 연령대별 피해유형 그래프용 데이터
     age_labels = df_age.iloc[:,0].tolist()
-    age_types = df_age.columns[1:].tolist()
+    # 첫 번째 열(피해건수)은 총합이므로 제외하고 세부 피해 유형만 사용
+    age_types = df_age.columns[2:].tolist()  # 2번째 열부터 (피해건수 제외)
     age_type_values = [df_age[type].tolist() for type in age_types]
 
     # 연도별 지원현황 그래프용 데이터

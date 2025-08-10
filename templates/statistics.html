@@ -21,9 +21,27 @@
             {
               label: '{{ type }}',
               data: {{ age_type_values[loop.index0] | tojson }},
-              backgroundColor: 'rgba({{ 60+loop.index0*30 }}, {{ 99+loop.index0*20 }}, 255, 0.7)',
-              borderColor: 'rgba({{ 59+loop.index0*30 }}, 76, 202, 1)',
-              borderWidth: 1
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',   // 빨강
+                'rgba(54, 162, 235, 0.8)',   // 파랑
+                'rgba(255, 206, 86, 0.8)',   // 노랑
+                'rgba(75, 192, 192, 0.8)',   // 청록
+                'rgba(153, 102, 255, 0.8)',  // 보라
+                'rgba(255, 159, 64, 0.8)',   // 주황
+                'rgba(199, 199, 199, 0.8)',  // 회색
+                'rgba(83, 102, 255, 0.8)'    // 남색
+              ][{{ loop.index0 }}] || 'rgba({{ 60+loop.index0*40 }}, {{ 120+loop.index0*30 }}, {{ 200-loop.index0*20 }}, 0.8)',
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(199, 199, 199, 1)',
+                'rgba(83, 102, 255, 1)'
+              ][{{ loop.index0 }}] || 'rgba({{ 60+loop.index0*40 }}, {{ 120+loop.index0*30 }}, {{ 200-loop.index0*20 }}, 1)',
+              borderWidth: 2
             }{% if not loop.last %},{% endif %}
             {% endfor %}
           ]
@@ -41,7 +59,7 @@
       });
     </script>
     <div style="color: var(--text-sub); font-size: 0.98rem; margin-top: 0.5rem;">
-      *해당 그래프는 한국여성인권진흥원의 데이터를 활용
+      *출처: 한국여성인권진흥원 디지털성범죄피해자지원센터 연령대별 세부 피해 유형 현황
     </div>
   </section>
 </div>
@@ -84,7 +102,7 @@
       });
     </script>
     <div style="color: var(--text-sub); font-size: 0.98rem; margin-top: 0.5rem;">
-      *해당 그래프는 한국여성인권진흥원의 데이터를 활용
+      *출처: 한국여성인권진흥원 디지털성범죄피해자지원센터 지원현황
     </div>
   </section>
 </div>
