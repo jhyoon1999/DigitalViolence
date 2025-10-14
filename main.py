@@ -1,10 +1,13 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse, JSONResponse
 import pandas as pd
 import numpy as np
 import uvicorn
 import os
+from datetime import datetime
+import hashlib
 
 app = FastAPI()
 
@@ -130,6 +133,113 @@ async def statistics(request: Request):
             "support_type_values": support_type_values,
         }
     )
+
+@app.get("/reviews")
+async def reviews(request: Request):
+    # Excel 파일에서 후기 데이터 읽기
+    try:
+        data_file = "data/reviews_data_new.xlsx"
+        if os.path.exists(data_file):
+            df_reviews = pd.read_excel(data_file, sheet_name="후기")
+            # NaN 값을 빈 문자열로 변환
+            df_reviews = df_reviews.fillna("")
+            reviews_data = df_reviews.to_dict('records')
+        else:
+            # 파일이 없으면 빈 DataFrame 생성하고 파일 생성
+            df_reviews = pd.DataFrame(columns=["번호", "작성자", "내용", "작성일시"])
+            reviews_data = []
+            # 초기 파일 생성
+            with pd.ExcelWriter(data_file, engine='openpyxl') as writer:
+                df_reviews.to_excel(writer, sheet_name="후기", index=False)
+    except Exception as e:
+        print(f"Error reading reviews: {e}")
+        reviews_data = []
+    
+    # 최신순으로 정렬 (번호가 큰 것부터)
+    reviews_data = sorted(reviews_data, key=lambda x: x.get('번호', 0), reverse=True)
+    
+    return templates.TemplateResponse("reviews.html", {
+        "request": request, 
+        "reviews_data": reviews_data
+    })
+
+@app.post("/reviews/add")
+async def add_review(request: Request, name: str = Form(...), content: str = Form(...), password: str = Form(...)):
+    try:
+        data_file = "data/reviews_data_new.xlsx"
+        
+        # 비밀번호 해시 생성
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        
+        # 기존 데이터 읽기
+        if os.path.exists(data_file):
+            df_reviews = pd.read_excel(data_file, sheet_name="후기")
+        else:
+            df_reviews = pd.DataFrame(columns=["번호", "작성자", "내용", "작성일시", "비밀번호"])
+        
+        # 새로운 번호 생성
+        if len(df_reviews) == 0:
+            new_id = 1
+        else:
+            new_id = df_reviews["번호"].max() + 1
+        
+        # 새 후기 추가
+        new_review = pd.DataFrame([{
+            "번호": new_id,
+            "작성자": name,
+            "내용": content,
+            "작성일시": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "비밀번호": password_hash
+        }])
+        
+        df_reviews = pd.concat([df_reviews, new_review], ignore_index=True)
+        
+        # Excel 파일에 저장
+        with pd.ExcelWriter(data_file, engine='openpyxl') as writer:
+            df_reviews.to_excel(writer, sheet_name="후기", index=False)
+        
+    except Exception as e:
+        print(f"Error adding review: {e}")
+    
+    # 후기 페이지로 리다이렉트
+    return RedirectResponse(url="/reviews", status_code=303)
+
+@app.post("/reviews/delete/{review_id}")
+async def delete_review(review_id: int, password: str = Form(...)):
+    try:
+        data_file = "data/reviews_data_new.xlsx"
+        
+        # 비밀번호 해시 생성
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        
+        # 기존 데이터 읽기
+        if os.path.exists(data_file):
+            df_reviews = pd.read_excel(data_file, sheet_name="후기")
+        else:
+            return JSONResponse({"success": False, "message": "데이터 파일이 없습니다."}, status_code=404)
+        
+        # 해당 번호의 후기 찾기
+        review = df_reviews[df_reviews["번호"] == review_id]
+        
+        if len(review) == 0:
+            return JSONResponse({"success": False, "message": "해당 후기를 찾을 수 없습니다."}, status_code=404)
+        
+        # 비밀번호 확인
+        if review.iloc[0]["비밀번호"] != password_hash:
+            return JSONResponse({"success": False, "message": "비밀번호가 일치하지 않습니다."}, status_code=401)
+        
+        # 후기 삭제
+        df_reviews = df_reviews[df_reviews["번호"] != review_id]
+        
+        # Excel 파일에 저장
+        with pd.ExcelWriter(data_file, engine='openpyxl') as writer:
+            df_reviews.to_excel(writer, sheet_name="후기", index=False)
+        
+        return JSONResponse({"success": True, "message": "후기가 삭제되었습니다."})
+        
+    except Exception as e:
+        print(f"Error deleting review: {e}")
+        return JSONResponse({"success": False, "message": f"삭제 중 오류가 발생했습니다: {str(e)}"}, status_code=500)
 
 if __name__ == "__main__":
     # 환경변수에서 포트 가져오기 (cloudtype.io는 기본적으로 8080 사용)

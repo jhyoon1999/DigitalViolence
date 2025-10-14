@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}사용자 후기 - 디지털 성범죄 현황{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center mb-4" style="color: var(--accent); font-weight: 700;">
+        <i class="fas fa-comments me-2"></i>사용자 후기
+      </h1>
+      <p class="text-center mb-5" style="color: var(--text-sub); font-size: 1.1rem;">
+        서비스를 이용하신 경험을 공유해주세요. 여러분의 소중한 의견이 더 나은 서비스를 만듭니다.
+      </p>
+    </div>
+  </div>
+
+  <!-- 후기 작성 폼 -->
+  <div class="card mb-5">
+    <div class="card-body">
+      <h4 class="mb-4" style="color: var(--accent);">
+        <i class="fas fa-pen-to-square me-2"></i>후기 작성하기
+      </h4>
+      <form method="POST" action="/reviews/add">
+        <div class="mb-3">
+          <label for="name" class="form-label" style="color: var(--text-main); font-weight: 500;">
+            작성자 <span style="color: var(--danger);">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="name" 
+            name="name" 
+            required 
+            maxlength="50"
+            placeholder="이름 또는 닉네임을 입력해주세요"
+            style="background: var(--main-bg); border: 1px solid var(--border); color: var(--text-main);"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="content" class="form-label" style="color: var(--text-main); font-weight: 500;">
+            내용 <span style="color: var(--danger);">*</span>
+          </label>
+          <textarea 
+            class="form-control" 
+            id="content" 
+            name="content" 
+            rows="5" 
+            required
+            maxlength="1000"
+            placeholder="서비스를 이용하신 경험이나 의견을 자유롭게 작성해주세요. (최대 1000자)"
+            style="background: var(--main-bg); border: 1px solid var(--border); color: var(--text-main);"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label" style="color: var(--text-main); font-weight: 500;">
+            비밀번호 <span style="color: var(--danger);">*</span>
+          </label>
+          <input 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            name="password" 
+            required 
+            minlength="4"
+            maxlength="20"
+            placeholder="후기 삭제 시 필요한 비밀번호 (4자 이상)"
+            style="background: var(--main-bg); border: 1px solid var(--border); color: var(--text-main);"
+          />
+          <small style="color: var(--text-sub);">※ 후기 삭제 시 사용됩니다. 잊지 마세요!</small>
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane me-2"></i>후기 등록
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 후기 목록 -->
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-4" style="color: var(--text-main);">
+        <i class="fas fa-list me-2"></i>등록된 후기 <span class="badge" style="background: var(--accent); font-size: 0.9rem;">{{ reviews_data|length }}</span>
+      </h4>
+      
+      {% if reviews_data %}
+        <div class="reviews-list">
+          {% for review in reviews_data %}
+          <div class="card mb-3 review-item">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <h6 class="mb-1" style="color: var(--accent); font-weight: 600;">
+                    <i class="fas fa-user-circle me-2"></i>{{ review.작성자 }}
+                  </h6>
+                  <small style="color: var(--text-sub);">
+                    <i class="far fa-clock me-1"></i>{{ review.작성일시 }}
+                  </small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge" style="background: var(--card-bg); color: var(--text-sub); border: 1px solid var(--border);">
+                    #{{ review.번호 }}
+                  </span>
+                  <button 
+                    class="btn btn-sm btn-danger delete-btn" 
+                    onclick="showDeleteModal({{ review.번호 }})"
+                    style="background: var(--danger); border: none; padding: 0.25rem 0.6rem;"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mt-3" style="color: var(--text-main); line-height: 1.7; white-space: pre-wrap;">{{ review.내용 }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="card text-center py-5">
+          <div class="card-body">
+            <i class="fas fa-inbox fa-3x mb-3" style="color: var(--text-sub); opacity: 0.5;"></i>
+            <p style="color: var(--text-sub); font-size: 1.1rem;">아직 등록된 후기가 없습니다.</p>
+            <p style="color: var(--text-sub);">첫 번째 후기를 작성해주세요!</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- 삭제 확인 모달 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background: var(--card-bg); border: 1px solid var(--border);">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+        <h5 class="modal-title" style="color: var(--text-main);">
+          <i class="fas fa-trash-alt me-2"></i>후기 삭제
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-main);">이 후기를 삭제하시겠습니까?</p>
+        <p style="color: var(--text-sub); font-size: 0.9rem;">삭제하려면 등록 시 입력한 비밀번호를 입력해주세요.</p>
+        <form id="deleteForm">
+          <input type="hidden" id="deleteReviewId" name="review_id">
+          <div class="mb-3">
+            <label for="deletePassword" class="form-label" style="color: var(--text-main);">비밀번호</label>
+            <input 
+              type="password" 
+              class="form-control" 
+              id="deletePassword" 
+              name="password" 
+              required
+              placeholder="비밀번호를 입력하세요"
+              style="background: var(--main-bg); border: 1px solid var(--border); color: var(--text-main);"
+            />
+          </div>
+          <div id="deleteError" class="alert alert-danger d-none" role="alert" style="background: rgba(246, 114, 128, 0.1); border: 1px solid var(--danger); color: var(--danger);">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid var(--border);">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background: var(--card-bg); border: 1px solid var(--border); color: var(--text-main);">
+          취소
+        </button>
+        <button type="button" class="btn btn-danger" onclick="deleteReview()" style="background: var(--danger); border: none;">
+          <i class="fas fa-trash-alt me-2"></i>삭제
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.review-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+}
+
+.form-control:focus {
+  background: var(--main-bg) !important;
+  border-color: var(--accent) !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+}
+
+.form-label {
+  font-size: 0.95rem;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let deleteModalInstance;
+
+// 페이지 로드 시 모달 인스턴스 초기화
+document.addEventListener('DOMContentLoaded', function() {
+  const deleteModalEl = document.getElementById('deleteModal');
+  if (deleteModalEl) {
+    deleteModalInstance = new bootstrap.Modal(deleteModalEl);
+  }
+});
+
+// 삭제 모달 표시
+function showDeleteModal(reviewId) {
+  document.getElementById('deleteReviewId').value = reviewId;
+  document.getElementById('deletePassword').value = '';
+  document.getElementById('deleteError').classList.add('d-none');
+  if (deleteModalInstance) {
+    deleteModalInstance.show();
+  }
+}
+
+// 후기 삭제 실행
+async function deleteReview() {
+  const reviewId = document.getElementById('deleteReviewId').value;
+  const password = document.getElementById('deletePassword').value;
+  const errorDiv = document.getElementById('deleteError');
+  
+  if (!password) {
+    errorDiv.textContent = '비밀번호를 입력해주세요.';
+    errorDiv.classList.remove('d-none');
+    return;
+  }
+  
+  try {
+    const formData = new FormData();
+    formData.append('password', password);
+    
+    const response = await fetch(`/reviews/delete/${reviewId}`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // 성공 시 모달 닫고 페이지 새로고침
+      if (deleteModalInstance) {
+        deleteModalInstance.hide();
+      }
+      // 약간의 딜레이 후 새로고침
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    } else {
+      // 실패 시 에러 메시지 표시
+      errorDiv.textContent = result.message || '삭제에 실패했습니다.';
+      errorDiv.classList.remove('d-none');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    errorDiv.textContent = '삭제 중 오류가 발생했습니다.';
+    errorDiv.classList.remove('d-none');
+  }
+}
+
+// Enter 키로 삭제 실행
+document.addEventListener('DOMContentLoaded', function() {
+  const passwordInput = document.getElementById('deletePassword');
+  if (passwordInput) {
+    passwordInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        deleteReview();
+      }
+    });
+  }
+});
+</script>
+{% endblock %}
+
