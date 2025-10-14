@@ -29,10 +29,6 @@ primary_region = 'sin'
   cpus = 1
   memory_mb = 512
 
-[[mounts]]
-  source = 'digitalviolence_data'
-  destination = '/app/data'
-
 [env]
   PORT = '8080'
   PYTHONPATH = '/app'
