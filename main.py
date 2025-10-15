@@ -204,6 +204,7 @@ async def add_review(request: Request, name: str = Form(...), content: str = For
     # 후기 페이지로 리다이렉트
     return RedirectResponse(url="/reviews", status_code=303)
 
+
 @app.post("/reviews/delete/{review_id}")
 async def delete_review(review_id: int, password: str = Form(...)):
     try:

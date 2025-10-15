@@ -12,8 +12,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="/static/css/style.css" />
 </head>
-<body style="background: #181c2b; color: #f5f6fa;">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+<body>
+  <nav class="navbar navbar-expand-lg shadow">
     <div class="container">
       <a class="navbar-brand" href="/">디지털 성범죄 알리미</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -41,6 +41,10 @@
           </li>
         </ul>
       </div>
+      <!-- 테마 토글 버튼 -->
+      <button class="theme-toggle-btn ms-3" onclick="toggleTheme()" aria-label="테마 전환" title="테마 전환">
+        <i class="fas fa-moon" id="theme-icon"></i>
+      </button>
     </div>
   </nav>
   <main class="mt-4">
@@ -48,8 +52,73 @@
       {% block content %}{% endblock %}
     </div>
   </main>
-  <footer class="bg-dark text-center py-3 mt-5" style="background: #23263a !important; color: #b0b3c6; border-top: 1px solid #23263a;">
+  <footer class="text-center py-3 mt-5">
     &copy; 2025. 06. 안전한 세상 만들기 모임
   </footer>
+
+  <script>
+    // 테마 전환 함수
+    function toggleTheme() {
+      const root = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      const currentTheme = root.classList.contains('light-mode') ? 'light' : 'dark';
+      
+      console.log('현재 테마:', currentTheme);
+      
+      if (currentTheme === 'dark') {
+        // 다크 -> 라이트
+        root.classList.add('light-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'light');
+        console.log('라이트 모드로 전환됨');
+        console.log('HTML 클래스:', root.className);
+      } else {
+        // 라이트 -> 다크
+        root.classList.remove('light-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'dark');
+        console.log('다크 모드로 전환됨');
+        console.log('HTML 클래스:', root.className);
+      }
+      
+      // CSS 변수 확인
+      const computedStyle = getComputedStyle(root);
+      console.log('--main-bg:', computedStyle.getPropertyValue('--main-bg'));
+      console.log('--card-bg:', computedStyle.getPropertyValue('--card-bg'));
+      console.log('body background-color:', getComputedStyle(document.body).backgroundColor);
+      
+      // 차트 색상 업데이트를 위한 이벤트 발생
+      document.dispatchEvent(new Event('themeChanged'));
+    }
+    
+    // 페이지 로드 시 저장된 테마 적용
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme');
+      const root = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      
+      console.log('저장된 테마:', savedTheme);
+      
+      if (savedTheme === 'light') {
+        root.classList.add('light-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        console.log('라이트 모드 로드됨');
+      } else {
+        // 기본값은 다크 모드
+        root.classList.remove('light-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        console.log('다크 모드 로드됨');
+      }
+      
+      // CSS 변수 확인
+      const computedStyle = getComputedStyle(root);
+      console.log('초기 --main-bg:', computedStyle.getPropertyValue('--main-bg'));
+      console.log('초기 body background-color:', getComputedStyle(document.body).backgroundColor);
+    });
+  </script>
 </body>
 </html>

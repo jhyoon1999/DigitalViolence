@@ -1,7 +1,8 @@
-/* 딥하고 진중한 스타일의 메인 컬러 팔레트 */
+/* 다크 모드 (기본) */
 :root {
   --main-bg: #181c2b;
   --card-bg: #23263a;
+  --navbar-bg: #14172b;
   --primary: #3b4cca;
   --accent: #6c63ff;
   --danger: #f67280;
@@ -9,21 +10,62 @@
   --text-sub: #b0b3c6;
   --border: #23263a;
   --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --banner-overlay: linear-gradient(120deg, rgba(24,28,43,0.9) 60%, rgba(59,76,202,0.5) 100%);
+}
+
+/* 라이트 모드 */
+:root.light-mode {
+  --main-bg: #f5f7fa;
+  --card-bg: #ffffff;
+  --navbar-bg: #ffffff;
+  --primary: #3b4cca;
+  --accent: #6c63ff;
+  --danger: #f67280;
+  --text-main: #2c3e50;
+  --text-sub: #5a6c7d;
+  --border: #e1e8ed;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --banner-overlay: linear-gradient(120deg, rgba(255,255,255,0.92) 60%, rgba(59,76,202,0.15) 100%);
 }
 
 body {
   font-family: 'Noto Sans KR', 'Nanum Gothic', sans-serif;
-  background: var(--main-bg);
+  background-color: var(--main-bg) !important;
   color: var(--text-main);
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* 네비게이션 바 스타일 */
 .navbar {
-  background: #14172b !important;
+  background-color: var(--navbar-bg) !important;
   box-shadow: var(--shadow);
   padding: 1rem 0;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 라이트 모드 네비게이션 바 */
+.light-mode .navbar {
+  border-bottom: 1px solid var(--border);
+}
+
+/* 네비게이션 토글 버튼 (햄버거 메뉴) */
+.navbar-toggler {
+  border-color: var(--border);
+  color: var(--text-main);
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(245, 246, 250, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.light-mode .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(44, 62, 80, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 .navbar .navbar-brand {
@@ -83,8 +125,9 @@ main .container {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(120deg, rgba(24,28,43,0.9) 60%, rgba(59,76,202,0.5) 100%);
+  background: var(--banner-overlay);
   z-index: 1;
+  transition: background 0.3s ease;
 }
 .banner .container {
   position: relative;
@@ -106,43 +149,47 @@ main .container {
   font-size: 1.1rem;
   padding: 0.7rem 2.2rem;
   border-radius: 2rem;
-  background: var(--accent);
+  background-color: var(--accent);
   color: #fff;
   font-weight: 600;
   box-shadow: var(--shadow);
   border: none;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 .banner .btn:hover {
-  background: var(--primary);
+  background-color: var(--primary);
 }
 
 /* 카드 스타일 */
 .card {
-  background: var(--card-bg);
+  background-color: var(--card-bg) !important;
   border-radius: 1.2rem;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   padding: 2rem 2rem 1.5rem 2rem;
   margin-bottom: 2rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* 차트 영역 */
 #ageChart {
   max-width: 100%;
-  background: var(--card-bg);
+  background-color: var(--card-bg) !important;
   border-radius: 1rem;
   box-shadow: var(--shadow);
   padding: 1.5rem;
+  transition: background-color 0.3s ease;
 }
 
 /* 서비스 소개 */
 .service-intro {
-  background: var(--card-bg);
+  background-color: var(--card-bg) !important;
   border-radius: 1.2rem;
   box-shadow: var(--shadow);
   padding: 2rem 2rem 1.5rem 2rem;
   color: var(--text-main);
+  border: 1px solid var(--border);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .service-intro h2 {
   color: var(--accent);
@@ -163,23 +210,131 @@ main .container {
 
 /* 버튼 */
 .btn-primary {
-  background: var(--accent) !important;
+  background-color: var(--accent) !important;
   border: none;
   color: #fff !important;
   font-weight: 600;
   border-radius: 2rem;
   box-shadow: var(--shadow);
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 .btn-primary:hover {
-  background: var(--primary) !important;
+  background-color: var(--primary) !important;
 }
 
 /* 푸터 */
 footer {
-  background: #23263a !important;
+  background-color: var(--card-bg) !important;
   color: var(--text-sub);
-  border-top: 1px solid #23263a;
+  border-top: 1px solid var(--border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 테마 토글 버튼 */
+.theme-toggle-btn {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--accent);
+  color: #fff;
+  transform: rotate(180deg);
+}
+
+/* 라이트 모드에서 텍스트 그림자 조정 */
+.light-mode .banner h1 {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: var(--text-main);
+}
+
+.light-mode .banner p {
+  color: var(--text-sub);
+}
+
+/* 라이트 모드에서 카드 내 모든 텍스트 명확하게 표시 */
+.light-mode .card,
+.light-mode .card h1,
+.light-mode .card h2,
+.light-mode .card h3,
+.light-mode .card h4,
+.light-mode .card p,
+.light-mode .card div,
+.light-mode .card section {
+  color: #2c3e50 !important;
+}
+
+.light-mode .service-intro,
+.light-mode .service-intro h1,
+.light-mode .service-intro h2,
+.light-mode .service-intro h3,
+.light-mode .service-intro h4,
+.light-mode .service-intro p,
+.light-mode .service-intro div {
+  color: #2c3e50 !important;
+}
+
+/* 라이트 모드에서 강조색은 유지 */
+.light-mode .card h2[style*="color: var(--accent)"],
+.light-mode .card h1[style*="color: var(--accent)"],
+.light-mode h1[style*="color: var(--accent)"],
+.light-mode h2[style*="color: var(--accent)"],
+.light-mode h4[style*="color: var(--accent)"] {
+  color: var(--accent) !important;
+}
+
+/* 라이트 모드에서 서브 텍스트 (출처 등) */
+.light-mode div[style*="color: var(--text-sub)"] {
+  color: #5a6c7d !important;
+}
+
+/* 라이트 모드 form 스타일 */
+.light-mode .form-control,
+.light-mode .form-select {
+  background-color: #ffffff !important;
+  border-color: var(--border) !important;
+  color: var(--text-main) !important;
+}
+
+.light-mode .form-control:focus,
+.light-mode .form-select:focus {
+  background-color: #ffffff !important;
+  border-color: var(--accent) !important;
+  color: var(--text-main) !important;
+}
+
+/* 라이트 모드 모달 */
+.light-mode .modal-content {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+.light-mode .modal-header,
+.light-mode .modal-footer {
+  border-color: var(--border) !important;
+}
+
+.light-mode .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.light-mode .btn-close-white {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* 라이트 모드 alert */
+.light-mode .alert {
+  color: var(--text-main);
 }
 
 /* 반응형 */
@@ -197,5 +352,12 @@ footer {
   .card, .service-intro {
     padding: 1.2rem 1rem 1rem 1rem;
     border-radius: 0.7rem;
+  }
+  
+  /* 모바일에서 테마 토글 버튼 */
+  .theme-toggle-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 }

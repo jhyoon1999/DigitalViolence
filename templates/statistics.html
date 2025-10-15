@@ -11,8 +11,19 @@
     <h2 class="mb-3" style="color: var(--accent);">연령대별 세부 피해 유형</h2>
     <canvas id="ageTypeChart" height="120"></canvas>
     <script>
+      // 테마에 맞는 차트 색상 가져오기
+      function getChartColors() {
+        const isLightMode = document.documentElement.classList.contains('light-mode');
+        return {
+          textColor: isLightMode ? '#2c3e50' : '#f5f6fa',
+          subTextColor: isLightMode ? '#5a6c7d' : '#b0b3c6',
+          gridColor: isLightMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'
+        };
+      }
+
       const ageTypeCtx = document.getElementById('ageTypeChart').getContext('2d');
-      new Chart(ageTypeCtx, {
+      const colors1 = getChartColors();
+      const ageTypeChart = new Chart(ageTypeCtx, {
         type: 'bar',
         data: {
           labels: {{ age_labels | tojson }},
@@ -48,14 +59,38 @@
         },
         options: {
           plugins: {
-            legend: { labels: { color: '#f5f6fa' } }
+            legend: { labels: { color: colors1.textColor } }
           },
           responsive: true,
           scales: {
-            x: { stacked: true, title: { display: true, text: '연령대', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } },
-            y: { stacked: true, beginAtZero: true, title: { display: true, text: '건수', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } }
+            x: { 
+              stacked: true, 
+              title: { display: true, text: '연령대', color: colors1.subTextColor }, 
+              ticks: { color: colors1.subTextColor },
+              grid: { color: colors1.gridColor }
+            },
+            y: { 
+              stacked: true, 
+              beginAtZero: true, 
+              title: { display: true, text: '건수', color: colors1.subTextColor }, 
+              ticks: { color: colors1.subTextColor },
+              grid: { color: colors1.gridColor }
+            }
           }
         }
+      });
+
+      // 테마 변경 시 차트 색상 업데이트
+      document.addEventListener('themeChanged', function() {
+        const newColors = getChartColors();
+        ageTypeChart.options.plugins.legend.labels.color = newColors.textColor;
+        ageTypeChart.options.scales.y.title.color = newColors.subTextColor;
+        ageTypeChart.options.scales.y.ticks.color = newColors.subTextColor;
+        ageTypeChart.options.scales.y.grid.color = newColors.gridColor;
+        ageTypeChart.options.scales.x.title.color = newColors.subTextColor;
+        ageTypeChart.options.scales.x.ticks.color = newColors.subTextColor;
+        ageTypeChart.options.scales.x.grid.color = newColors.gridColor;
+        ageTypeChart.update();
       });
     </script>
     <div style="color: var(--text-sub); font-size: 0.98rem; margin-top: 0.5rem;">
@@ -71,7 +106,8 @@
     <canvas id="supportChart" height="120"></canvas>
     <script>
       const supportCtx = document.getElementById('supportChart').getContext('2d');
-      new Chart(supportCtx, {
+      const colors2 = getChartColors();
+      const supportChart = new Chart(supportCtx, {
         type: 'line',
         data: {
           labels: {{ year_labels | tojson }},
@@ -91,14 +127,36 @@
         },
         options: {
           plugins: {
-            legend: { labels: { color: '#f5f6fa' } }
+            legend: { labels: { color: colors2.textColor } }
           },
           responsive: true,
           scales: {
-            x: { title: { display: true, text: '연도', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } },
-            y: { beginAtZero: true, title: { display: true, text: '건수', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } }
+            x: { 
+              title: { display: true, text: '연도', color: colors2.subTextColor }, 
+              ticks: { color: colors2.subTextColor },
+              grid: { color: colors2.gridColor }
+            },
+            y: { 
+              beginAtZero: true, 
+              title: { display: true, text: '건수', color: colors2.subTextColor }, 
+              ticks: { color: colors2.subTextColor },
+              grid: { color: colors2.gridColor }
+            }
           }
         }
+      });
+
+      // 테마 변경 시 차트 색상 업데이트
+      document.addEventListener('themeChanged', function() {
+        const newColors = getChartColors();
+        supportChart.options.plugins.legend.labels.color = newColors.textColor;
+        supportChart.options.scales.y.title.color = newColors.subTextColor;
+        supportChart.options.scales.y.ticks.color = newColors.subTextColor;
+        supportChart.options.scales.y.grid.color = newColors.gridColor;
+        supportChart.options.scales.x.title.color = newColors.subTextColor;
+        supportChart.options.scales.x.ticks.color = newColors.subTextColor;
+        supportChart.options.scales.x.grid.color = newColors.gridColor;
+        supportChart.update();
       });
     </script>
     <div style="color: var(--text-sub); font-size: 0.98rem; margin-top: 0.5rem;">

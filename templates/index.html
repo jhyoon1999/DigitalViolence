@@ -18,8 +18,19 @@
     <h2 class="mb-4" style="color: var(--accent);">연령대별 피해 건수</h2>
     <canvas id="ageChart" height="100"></canvas>
     <script>
+      // 테마에 맞는 차트 색상 가져오기
+      function getChartColors() {
+        const isLightMode = document.documentElement.classList.contains('light-mode');
+        return {
+          textColor: isLightMode ? '#2c3e50' : '#f5f6fa',
+          subTextColor: isLightMode ? '#5a6c7d' : '#b0b3c6',
+          gridColor: isLightMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'
+        };
+      }
+
       const ctx = document.getElementById('ageChart').getContext('2d');
-      new Chart(ctx, {
+      const colors = getChartColors();
+      const ageChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: {{ age_labels | tojson }},
@@ -33,13 +44,35 @@
         },
         options: {
           plugins: {
-            legend: { labels: { color: '#f5f6fa' } }
+            legend: { labels: { color: colors.textColor } }
           },
           scales: {
-            y: { beginAtZero: true, title: { display: true, text: '건수', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } },
-            x: { title: { display: true, text: '연령대', color: '#b0b3c6' }, ticks: { color: '#b0b3c6' } }
+            y: { 
+              beginAtZero: true, 
+              title: { display: true, text: '건수', color: colors.subTextColor }, 
+              ticks: { color: colors.subTextColor },
+              grid: { color: colors.gridColor }
+            },
+            x: { 
+              title: { display: true, text: '연령대', color: colors.subTextColor }, 
+              ticks: { color: colors.subTextColor },
+              grid: { color: colors.gridColor }
+            }
           }
         }
+      });
+
+      // 테마 변경 시 차트 색상 업데이트
+      document.addEventListener('themeChanged', function() {
+        const newColors = getChartColors();
+        ageChart.options.plugins.legend.labels.color = newColors.textColor;
+        ageChart.options.scales.y.title.color = newColors.subTextColor;
+        ageChart.options.scales.y.ticks.color = newColors.subTextColor;
+        ageChart.options.scales.y.grid.color = newColors.gridColor;
+        ageChart.options.scales.x.title.color = newColors.subTextColor;
+        ageChart.options.scales.x.ticks.color = newColors.subTextColor;
+        ageChart.options.scales.x.grid.color = newColors.gridColor;
+        ageChart.update();
       });
     </script>
   </section>
