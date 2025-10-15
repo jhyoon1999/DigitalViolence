@@ -17,9 +17,39 @@ app = FastAPI()
 static_dir = "static"
 templates_dir = "templates"
 
+# CSS 캐시 버스팅을 위한 버전 생성 (CSS 파일의 수정 시간 기반)
+def get_css_version():
+    """CSS 파일의 수정 시간을 기반으로 버전 번호 생성"""
+    css_file = os.path.join(static_dir, "css", "style.css")
+    if os.path.exists(css_file):
+        # 파일의 수정 시간을 타임스탬프로 변환
+        mtime = os.path.getmtime(css_file)
+        return str(int(mtime))
+    return str(int(datetime.now().timestamp()))
+
+CSS_VERSION = get_css_version()
+
 # Static 파일 마운트 (더 구체적인 설정)
 app.mount("/static", StaticFiles(directory=static_dir, html=True), name="static")
 templates = Jinja2Templates(directory=templates_dir)
+
+# 모든 템플릿에 CSS 버전 추가하는 context processor
+templates.env.globals['css_version'] = CSS_VERSION
+
+# 정적 파일 캐시 제어를 위한 미들웨어
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class NoCacheMiddleware(BaseHTTPMiddleware):
+    """CSS/JS 파일에 대한 캐시 제어 헤더 추가"""
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        # CSS나 JS 파일에 대해서는 짧은 캐시 시간 설정
+        if request.url.path.endswith(('.css', '.js')):
+            response.headers['Cache-Control'] = 'public, max-age=300'  # 5분
+        return response
+
+app.add_middleware(NoCacheMiddleware)
 
 @app.get("/")
 async def home(request: Request):
@@ -203,7 +233,6 @@ async def add_review(request: Request, name: str = Form(...), content: str = For
     
     # 후기 페이지로 리다이렉트
     return RedirectResponse(url="/reviews", status_code=303)
-
 
 @app.post("/reviews/delete/{review_id}")
 async def delete_review(review_id: int, password: str = Form(...)):
